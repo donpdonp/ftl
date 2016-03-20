@@ -3,7 +3,7 @@
   (general
     (links 0)
     (no_connects 0)
-    (area 129.552381 34.45 155.04762 94.000001)
+    (area 129.552381 34.45 155.04762 94.75115)
     (thickness 1.6)
     (drawings 7)
     (tracks 0)
@@ -86,7 +86,7 @@
       (mirror false)
       (drillshape 0)
       (scaleselection 1)
-      (outputdirectory ""))
+      (outputdirectory /home/donp/mb.svg))
   )
 
   (net 0 "")
