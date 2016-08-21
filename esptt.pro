@@ -1,4 +1,4 @@
-update=Sun 20 Mar 2016 04:26:19 PM PDT
+update=Sat 20 Aug 2016 02:25:39 PM PDT
 version=1
 last_client=kicad
 [pcbnew]
@@ -61,3 +61,4 @@ LibName29=valves
 LibName30=kicad-ESP8266/ESP8266
 LibName31=kicad-lib/aalay
 LibName32=kicad-lib/OPL-Antenna
+LibName33=kicadlibrary/open-project
