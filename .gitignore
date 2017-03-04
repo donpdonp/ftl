@@ -1,4 +1,6 @@
 *.kicad_pcb-bak
 esptt-cache.lib
 esptt.bak
+*.pro
+breakouts/*.pro
 
