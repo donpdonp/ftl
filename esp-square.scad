@@ -1,7 +1,7 @@
 //21.55x28.01
 w=22.7;
 h=28.9;
-z=7;
+z=9;
 rim=0.08;
 text="ftl";
 fontsize=10;
@@ -15,8 +15,8 @@ difference() {
  }    
 
 // pin seat
- pinseatw=4;
- pinseath=14;
+ pinseatw=3.5;
+ pinseath=13.5;
  translate([w*rim-0.1, h*rim*3.5, 0]){
   cube([pinseatw,pinseath,z]);
  }    
@@ -46,7 +46,7 @@ difference() {
  }    
  
      // screwholes
-     screw_r=2;
+     screw_r=1.4;
      screw_h=4;
      translate([w*(rim)+(screw_r/2),h*rim+(screw_r/2),0]) {
          cylinder(h=screw_h, r=screw_r, $fn=10);
