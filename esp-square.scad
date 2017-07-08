@@ -45,22 +45,23 @@ difference() {
   cube([usb_width,(h*rim)+1,z]);
  }    
  
-     // screwholes
-     screw_r=1.4;
-     screw_h=4;
-     translate([w*(rim)+(screw_r/2),h*rim+(screw_r/2),0]) {
-         cylinder(h=screw_h, r=screw_r, $fn=10);
-     }
-     translate([w*(1-rim)+(screw_r/2),h*rim+(screw_r/2),0]) {
-         cylinder(h=screw_h, r=screw_r, $fn=10);
-     }
-     translate([w*(rim)+(screw_r/2),h*(1-rim)+(screw_r/2),0]) {
-         cylinder(h=screw_h, r=screw_r, $fn=10);
-     }
-     translate([w*(1-rim)+(screw_r/2),h*(1-rim)+(screw_r/2),0]) {
-         cylinder(h=screw_h, r=screw_r, $fn=10);
-     }
-    }
+ // screwholes
+ screw_r=1.5;
+ screw_h=4;
+ translate([w*(rim)+(screw_r/2),h*rim+(screw_r/1.4),0]) {
+     cylinder(h=screw_h, r=screw_r, $fn=10);
+ }
+ translate([w*(1-rim)+(screw_r/2),h*rim+(screw_r/1.4),0]) {
+     cylinder(h=screw_h, r=screw_r, $fn=10);
+ }
+ /*translate([w*(rim)+(screw_r/2),h*(1-rim)+(screw_r/2),0]) {
+     cylinder(h=screw_h, r=screw_r, $fn=10);
+ }
+ translate([w*(1-rim)+(screw_r/2),h*(1-rim)+(screw_r/2),0]) {
+     cylinder(h=screw_h, r=screw_r, $fn=10);
+ }*/
+
+}
 
 // text
 //translate([w/3,2,0]) {
