@@ -3,11 +3,11 @@ ftl.version = "0.1"
 
 print("ftl loading...")
 require("config")
-require("wifi")
+require("ftl-wifi")
 
 function ftl:setup()
   -- listen
-  print("ssid "..ftl.config.ssid)
+  print("ssid "..ftl.config.wifi.ssid)
   ftl.wifi:setup()
 end
 

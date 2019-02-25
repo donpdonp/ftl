@@ -1,5 +1,7 @@
+#!/bin/bash
 TTY=`ls -1 /dev/ttyACM*`
 echo loading $1 to $TTY
+
 RET=1
 while [ $RET -eq 1 ]
 do

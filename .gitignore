@@ -1,3 +1,4 @@
+config.lua
 *.kicad_pcb-bak
 esptt-cache.lib
 esptt.bak
