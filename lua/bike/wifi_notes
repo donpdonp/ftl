@@ -1,0 +1,12 @@
+wifi.setmode(wifi.STATIONAP)
+cfg={}
+cfg.ssid="bike-lights"
+wifi.ap.config(cfg)
+
+station_cfg={}
+station_cfg.ssid="lighthouse"
+station_cfg.pwd="fresnel0"
+station_cfg.save=true
+wifi.sta.config(station_cfg)
+
+mdns.register("bikecomputer")

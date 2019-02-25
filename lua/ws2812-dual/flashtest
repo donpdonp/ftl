@@ -1,0 +1,8 @@
+buf = ws2812.newBuffer(5, 3)
+buf:set(1, 50,50,50)
+buf:set(2, 50,00,00)
+buf:set(3, 00,00,50)
+function writew()
+ws2812.write(nil, buf)
+end
+tmr.alarm(0,36,1,writew)

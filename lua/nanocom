@@ -1,0 +1,3 @@
+tty=`ls -1 /dev/ttyACM*`
+echo /opt/bin/nanocom $tty -b 9600 -d 8 -s 1 -p n -f n -e n
+/opt/bin/nanocom $tty -b 9600 -d 8 -s 1 -p n -f n -e n

@@ -1,0 +1,12 @@
+TTY=`ls -1 /dev/ttyACM*`
+echo loading $1 to $TTY
+RET=1
+while [ $RET -eq 1 ]
+do
+#../luatool/luatool/luatool.py -p $TTY --delay 0.8 -f $1
+#../luatool/luatool/luatool.py -p $TTY -f $1
+luatool -p $TTY -f $1
+RET=$?
+echo exit $RET
+done
+
