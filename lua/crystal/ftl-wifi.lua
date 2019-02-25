@@ -19,13 +19,14 @@ end
 
 function ftl.wifi:watch(clientconn)
   status = wifi.sta.status()
-  log("wifi "..ftl.wifi:statusout(status))
   if status == wifi.STA_GOTIP then
     tmr.stop(ftl.wifi.alarm)
-    log(wifi.sta.getip())
+    log("wifi "..wifi.sta.getip())
     ftl.wifi:mdnssetup(wifi.sta.getmac())
     srv = net.createServer(net.TCP)
     srv:listen(1550, clientconn)
+  else
+    log("wifi "..ftl.wifi:statusout(status))
   end
 end
 
@@ -52,7 +53,7 @@ end
 
 function ftl.wifi:mdnssetup(mac)
   id="ftl-"..string.sub(mac, 13,14)..string.sub(mac, 16,17)
-  log("mdns register " .. id)
+  log("mdns register "..id..".local")
   mdns.register(id, { description="FTL Lights ["..id.."]",
                       service="rgbled", port=1550 })
 end
