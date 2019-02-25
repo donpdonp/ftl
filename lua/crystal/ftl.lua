@@ -9,20 +9,14 @@ function ftl:setup()
   ftl.wifi:setup(ftl.clientconn)
 end
 
-function ftl:clientconn(conn)
-  log("tcp client connected")
+function ftl.clientconn(conn)
+  port, ip = conn:getpeer()
+  log("tcp client "..ip..":"..port)
   conn:on("receive", function(conn, payload)
-      log(payload)
+      if payload then
+        log("R:"..payload)
+      else
+        log("R: nil")
+      end
     end)
-end
-
-function ftl:setupjson()
-  fd = file.open("config.json", "r")
-  if fd then
-    json = fd:read()
-    fd:close(); fd = nil
-    ftl.config = sjson.decode(json)
-  else
-    log("missing config.json")
-  end
 end

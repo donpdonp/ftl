@@ -11,7 +11,6 @@ else
   tmr.alarm(0, 2000, tmr.ALARM_SINGLE, function()
     require('util')
     require('ftl')
-    print("time stop")
     ftl:setup()
   end)
 end
