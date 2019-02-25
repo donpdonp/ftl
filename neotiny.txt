@@ -1,0 +1,7 @@
+
+ranges 
+Lipo - 3.0v min, 3.7v normal, 4.2v maximum
+In - 1S 3.0-4.2v to 2s 6.0-8.4v
+Attiny - (20mhz) 2.7v to 5.5v (10mhz 1.8-5.5)
+8 Neopixel -  4v to 7v
+3535 Neopixel - 3.5 to 5.5v
