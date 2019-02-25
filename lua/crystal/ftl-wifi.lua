@@ -11,24 +11,21 @@ function ftl.wifi:setup(clientconn)
   log('Chip ID: #'..node.chipid())
   wifi.sta.config(ftl.config.wifi)
   log('connecting to '..wifi.sta.getconfig(true).ssid)
-  print("wifi status poll on timer 0. tmr.stop("..ftl.wifi.alarm..") to stop")
+  log("tmr.stop("..ftl.wifi.alarm..") to stop wifi status checks")
   tmr.alarm(ftl.wifi.alarm, 2000, 1, function()
-      ftl.wifi.watch(clientconn)
+      ftl.wifi:watch(clientconn)
     end)
 end
 
 function ftl.wifi:watch(clientconn)
   status = wifi.sta.status()
-  log("watch ")
-  log(clientconn)
   log("wifi "..ftl.wifi:statusout(status))
   if status == wifi.STA_GOTIP then
     tmr.stop(ftl.wifi.alarm)
+    log(wifi.sta.getip())
     ftl.wifi:mdnssetup(wifi.sta.getmac())
     srv = net.createServer(net.TCP)
-    log("srv:listen ")
-    log(clientconn)
-    --srv:listen(1550, clientconn)
+    srv:listen(1550, clientconn)
   end
 end
 
