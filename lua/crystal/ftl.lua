@@ -1,13 +1,13 @@
 ftl = ftl or {}
 ftl.version = "0.1"
 
-print("ftl loading...")
+log("ftl v"..ftl.version.." loading...")
 require("config")
 require("ftl-wifi")
 
 function ftl:setup()
   -- listen
-  print("ssid "..ftl.config.wifi.ssid)
+  log("ssid "..ftl.config.wifi.ssid)
   ftl.wifi:setup()
 end
 
@@ -18,6 +18,6 @@ function ftl:setupjson()
     fd:close(); fd = nil
     ftl.config = sjson.decode(json)
   else
-    print("missing config.json")
+    log("missing config.json")
   end
 end

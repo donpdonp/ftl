@@ -1,4 +1,4 @@
-print("*ftl.wifi")
+log("*ftl.wifi")
 ftl.wifi = {}
 
 function ftl.wifi:setup()
