@@ -6,8 +6,6 @@ require("config")
 require("ftl-wifi")
 
 function ftl:setup()
-  -- listen
-  log("ssid "..ftl.config.wifi.ssid)
   ftl.wifi:setup()
 end
 

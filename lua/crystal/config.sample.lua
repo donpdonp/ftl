@@ -1,4 +1,4 @@
-print("*ftl.config")
+log("*ftl.config")
 ftl.config = {}
 
 -- wifi settings
