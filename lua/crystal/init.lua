@@ -2,7 +2,7 @@
 bootcode, bootreason = node.bootreason()
 print("bootreason "..bootreason)
 
-if bootreason == 2 then
+if bootreason == 3 then
   print("exception reboot. ftl startup halted.")
 else
   -- safety pause
