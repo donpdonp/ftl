@@ -1,4 +1,2 @@
 TTY=`ls -1 /dev/ttyACM*`
-#TTY=/dev/ttyUSB0 #`ls -1 /dev/ttyUSB*`
-echo ../luatool/luatool/luatool.py -p $TTY -l
-../luatool/luatool/luatool.py -p $TTY -l
+luatool -p $TTY -l
