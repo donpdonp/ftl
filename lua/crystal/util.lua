@@ -1,3 +1,6 @@
 function log(msg)
-  uart.write(0, msg.."\n")
+  if msg then
+    uart.write(0, msg)
+    uart.write(0, "\n")
+  end
 end

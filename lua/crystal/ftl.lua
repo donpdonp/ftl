@@ -6,7 +6,14 @@ require("config")
 require("ftl-wifi")
 
 function ftl:setup()
-  ftl.wifi:setup()
+  ftl.wifi:setup(ftl.clientconn)
+end
+
+function ftl:clientconn(conn)
+  log("tcp client connected")
+  conn:on("receive", function(conn, payload)
+      log(payload)
+    end)
 end
 
 function ftl:setupjson()
