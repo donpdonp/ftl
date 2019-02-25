@@ -7,3 +7,7 @@ function log(msg)
     uart.write(0, "_"..msgtype.."_\n")
   end
 end
+
+function restart()
+  node.restart()
+end

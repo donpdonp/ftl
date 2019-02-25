@@ -13,11 +13,13 @@ end
 function ftl.clientconn(conn)
   port, ip = conn:getpeer()
   log("tcp client "..ip..":"..port)
-  buff = string.char(0):rep(2048)
+  buff = ""
   conn:on("receive", function(conn, payload)
       if payload and payload:len() > 0 then
         log("R:"..payload.." "..payload:len())
-        buff = buff .. payload
+        if buff:len() < 2048 then
+          buff = buff .. payload
+        end
       end
       if buff:len() >= 4 then
         openpixel.go(buff)
