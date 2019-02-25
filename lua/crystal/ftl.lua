@@ -7,7 +7,9 @@ require("ftl-wifi")
 require("openpixel")
 
 function ftl:setup()
+  log(sjson.encode(ftl.config))
   ftl.wifi:setup(ftl.clientconn)
+  ftl.pixelbuf = ws2812.newBuffer(ftl.config.pixels.count, ftl.config.pixels.bytes)
 end
 
 function ftl.clientconn(conn)
