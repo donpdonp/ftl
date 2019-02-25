@@ -9,6 +9,7 @@ if bootreason == 3 then
 else
   -- safety pause
   tmr.alarm(0, 2000, tmr.ALARM_SINGLE, function()
+    print()
     require('util')
     require('ftl')
     ftl:setup()
