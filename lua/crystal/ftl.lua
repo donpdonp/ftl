@@ -8,9 +8,10 @@ require("ftl-pixelbuf")
 require("openpixel")
 
 function ftl:setup()
-  log(sjson.encode(ftl.config))
-  ftl.wifi:setup(ftl.clientconn)
+--  RED   = string.char(10, 10, 50, 10, 5,1,5,1)
+--  apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, RED:rep(20))
   ftl.buffer = ftl.pixelbuf.new(ftl.config.pixels.count, ftl.config.pixels.bytesperpixel)
+  ftl.wifi:setup(ftl.clientconn)
 end
 
 function ftl.clientconn(conn)
@@ -38,18 +39,8 @@ function ftl.dispatch(channel, command, buff)
   log("openpixel dispatch "..channel.." "..command.." "..bufflen)
   if command == 0 then
     if bufflen > 0 then
-      if bufflen % 3 == 0 then
-        log("set 8bit colors. msg 3bpp. pixelbuf "..(ftl.buffer:len() % 3).."bpp")
---      openpixel.setrgb(buff)
-        ftl.pixelbuf.replace(ftl.buffer, 0, buff, ftl.config.pixels.bytesperpixel)
-        ftl.pixelbuf.write()
-        return "8bpp"
-      end
-      if bufflen % 4 == 0 then
-        log("set 8bit colors. msg 4bpp. pixelbuf "..(ftl.buffer:len() % 4).."bpp")
---      openpixel.setrgbw(buff)
-        ftl.pixelbuf.write()
-      end
+      ftl.buffer = ftl.pixelbuf.replace(ftl.buffer, 1, buff, ftl.config.pixels.bytesperpixel)
+      ftl.pixelbuf.write(ftl.buffer)
     end
   end
   if command == 1 then
