@@ -10,7 +10,7 @@ require("openpixel")
 function ftl:setup()
   log(sjson.encode(ftl.config))
   ftl.wifi:setup(ftl.clientconn)
-  ftl.buffer = ftl.pixelbuf.new(ftl.config.pixels.count, ftl.config.pixels.bytes)
+  ftl.buffer = ftl.pixelbuf.new(ftl.config.pixels.count, ftl.config.pixels.bytesperpixel)
 end
 
 function ftl.clientconn(conn)
@@ -22,12 +22,14 @@ function ftl.clientconn(conn)
       channel, command, msg = openpixel.go(buff, payload)
       if channel then
         buff = buff:sub(4+msg:len()+1, buff:len())
+        log("buff remaining len "..buff:len())
         response = ftl.dispatch(channel, command, msg)
         if response then
           conn:send(response)
         end
+      else
+        log("buff at len "..buff:len().." payload "..payload:len())
       end
-      log("buff at len "..buff:len().." payload "..payload:len())
     end)
 end
 
@@ -39,11 +41,14 @@ function ftl.dispatch(channel, command, buff)
       if bufflen % 3 == 0 then
         log("set 8bit colors. msg 3bpp. pixelbuf "..(ftl.buffer:len() % 3).."bpp")
 --      openpixel.setrgb(buff)
+        ftl.pixelbuf.replace(ftl.buffer, 0, buff, ftl.config.pixels.bytesperpixel)
+        ftl.pixelbuf.write()
         return "8bpp"
       end
       if bufflen % 4 == 0 then
         log("set 8bit colors. msg 4bpp. pixelbuf "..(ftl.buffer:len() % 4).."bpp")
 --      openpixel.setrgbw(buff)
+        ftl.pixelbuf.write()
       end
     end
   end
