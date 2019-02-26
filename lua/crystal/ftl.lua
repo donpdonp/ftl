@@ -1,5 +1,5 @@
 ftl = ftl or {}
-ftl.version = "0.1"
+ftl.version = "0.2"
 
 log("*ftl v"..ftl.version)
 require("config")
