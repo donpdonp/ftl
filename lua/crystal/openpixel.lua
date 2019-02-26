@@ -15,7 +15,6 @@ function openpixel.go(buff, payload)
 end
 
 function openpixel.header(buff)
-  log("openpixel parsing header from size "..buff:len())
   channel = buff:sub(1,1)
   command = buff:sub(2,2)
   len = (buff:sub(3,3):byte()*256) + buff:sub(4,4):byte()

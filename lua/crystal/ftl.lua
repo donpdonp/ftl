@@ -22,7 +22,10 @@ function ftl.clientconn(conn)
       channel, command, msg = openpixel.go(buff, payload)
       if channel then
         buff = buff:sub(4+msg:len()+1, buff:len())
-        ftl.dispatch(channel, command, msg)
+        response = ftl.dispatch(channel, command, msg)
+        if response then
+          conn:send(response)
+        end
       end
       log("buff at len "..buff:len().." payload "..payload:len())
     end)
@@ -32,16 +35,29 @@ function ftl.dispatch(channel, command, buff)
   bufflen = buff:len()
   log("openpixel dispatch "..channel.." "..command.." "..bufflen)
   if command == 0 then
-    log("set 8bit colors")
-    if bufflen % 3 == 0 then
+    if bufflen > 0 then
+      if bufflen % 3 == 0 then
+        log("set 8bit colors. msg 3bpp. pixelbuf "..(ftl.buffer:len() % 3).."bpp")
 --      openpixel.setrgb(buff)
-    end
-    if bufflen % 4 == 0 then
+        return "8bpp"
+      end
+      if bufflen % 4 == 0 then
+        log("set 8bit colors. msg 4bpp. pixelbuf "..(ftl.buffer:len() % 4).."bpp")
 --      openpixel.setrgbw(buff)
+      end
     end
   end
   if command == 1 then
     log("set 16bit colors")
+  end
+  if command == 255 then
+    rssi = wifi.sta.getrssi()
+    if rssi then
+      log("rssi "..rssi)
+      return "rssi "..rssi
+    else
+      log("rssi null")
+    end
   end
 end
 
