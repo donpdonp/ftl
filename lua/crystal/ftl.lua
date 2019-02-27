@@ -12,8 +12,9 @@ require("openpixel")
 log("*ftl post openpixel heap "..node.heap())
 
 function ftl:setup()
-  local startcolors = string.char(15,0,0,50, 5,1,5,1)
-  apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, startcolors:rep(ftl.config.pixels.count))
+  local startcolors = string.char(15,0,0,50, 5,1,5,1):rep(math.floor(ftl.config.pixels.count/2))
+  ftl.pixelbuf.write(startcolors)
+  apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, startcolors)
 --  ftl.buffer = ftl.pixelbuf.new(ftl.config.pixels.count, ftl.config.pixels.bytesperpixel)
   ftl.wifi:setup(ftl.clientconn)
 end
@@ -26,11 +27,20 @@ function ftl.clientconn(conn)
       if node.heap() < 14000 then
         log("buff len "..buff:len().." payload len "..payload:len().." heap WARNING "..node.heap())
       end
+      if buff:len() > 0 then
+        log("WARNING starting buff len "..buff:len().." payload len "..payload:len().." heap "..node.heap())
+      end
+      if buff:len() + payload:len() > 4096 then
+        log("WARNING buff reset before 4096 overload")
+        conn:close()
+        return
+      end
       buff = buff .. payload
       bufflen = buff:len()
-      channel, command, msg = openpixel.go(buff, payload)
+      local channel, command, msglen = openpixel.header(buff)
       if channel then
-        buff = buff:sub(4+msg:len()+1, bufflen)
+        local msg = buff:sub(openpixel.headerlen+1, openpixel.headerlen+msglen)
+        buff = buff:sub(openpixel.headerlen+msglen+1, bufflen)
         if buff:len() > 0 then
           log("WARNING remaining buff len "..buff:len().." heap "..node.heap())
         end
@@ -39,8 +49,10 @@ function ftl.clientconn(conn)
           conn:send(response)
         end
       else
-        log("short buff len "..bufflen.." added payload "..payload:len().." heap "..node.heap())
-        if bufflen > 4096 then
+        local nodeheap = node.heap()
+        log("short buff len "..bufflen.." added payload "..payload:len().." heap "..nodeheap)
+        if nodeheap < 16200 then
+          conn:send("quit heap "..nodeheap)
           conn:close()
         end
       end
@@ -70,6 +82,13 @@ function ftl.dispatch(channel, command, buff)
     end
 --    buff = ftl.pixelbuf.trim(buff, ftl.config.pixels.count, 4)
 --    ftl.buffer = ftl.pixelbuf.replace(ftl.buffer, 1, buff, 4)
+    ftl.pixelbuf.write(buff)
+  end
+  if command == 3 then -- write pos,rgbw
+    local pos = buff.byte()
+    buff = buff:sub(2, buff:len())
+    log("replace pos "..pos.." buflen "..buff:len())
+    buff = ftl.pixelbuf.replace(ftl.buffer, 1, buff, ftl.config.pixels.bytesperpixel)
     ftl.pixelbuf.write(buff)
   end
   if command == 255 then

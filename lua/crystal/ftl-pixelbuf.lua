@@ -40,6 +40,7 @@ end
 
 function ftl.pixelbuf.write(buffer)
   apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, buffer)
+  ftl.buffer = buffer
 end
 
 function ftl.pixelbuf.repack(buffer, bpp)
