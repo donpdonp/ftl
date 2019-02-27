@@ -1,4 +1,4 @@
-log("*ftl.wifi")
+log("*ftl.wifi".." heap "..node.heap())
 ftl.wifi = {}
 ftl.wifi.alarm = 1
 
@@ -19,7 +19,7 @@ function ftl.wifi:watch(clientconn)
   status = wifi.sta.status()
   if status == wifi.STA_GOTIP then
     tmr.stop(ftl.wifi.alarm)
-    log("wifi "..wifi.sta.getip().." "..wifi.sta.getrssi())
+    log("wifi "..wifi.sta.getip().." "..wifi.sta.getrssi().." heap "..node.heap())
     --ftl.wifi:mdnssetup(wifi.sta.getmac())
     srv = net.createServer(net.TCP)
     srv:listen(1550, clientconn)

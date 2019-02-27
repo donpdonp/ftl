@@ -1,4 +1,4 @@
-log("*ftl.pixelbuf-apa102")
+log("*ftl.pixelbuf-apa102".." heap "..node.heap())
 ftl.pixelbuf = {}
 
 function ftl.pixelbuf.new(count, bpp)
@@ -6,34 +6,69 @@ function ftl.pixelbuf.new(count, bpp)
 end
 
 function ftl.pixelbuf.grow(PIXELMEMORY, position, LEDBYTES)
-  positionBytes = position*LEDBYTES
-  memSize = PIXELMEMORY:len()
-  memSizeLeds = memSize/LEDBYTES
+  local positionBytes = position*LEDBYTES
+  local memSize = PIXELMEMORY:len()
+  local memSizeLeds = memSize/LEDBYTES
   if memSize < positionBytes then
     missingCount = positionBytes - memSize
 --    log("pix memory of "..memSize.." bytes "..memSizeLeds.." leds growing by " ..missingCount.. " bytes")
-    added = string.char(0):rep(missingCount)
+    local added = string.char(0):rep(missingCount)
     PIXELMEMORY = PIXELMEMORY .. added
     newmemSize = PIXELMEMORY:len()
     newmemSizeLeds = newmemSize/LEDBYTES
---    log("pix memory now "..newmemSize.." bytes " ..newmemSizeLeds.. " leds")
+    log("pixel memory now "..newmemSize.." bytes " ..newmemSizeLeds.. " leds heap "..node.heap())
   end
   return PIXELMEMORY
 end
 
 function ftl.pixelbuf.replace(PIXELMEMORY, position, char, LEDBYTES)
+  prelen = PIXELMEMORY:len()
   if position < 1 then
     position = 1
   end
   positionBytes = (position-1)*LEDBYTES
-  pre = PIXELMEMORY:sub(1, positionBytes)
-  post = PIXELMEMORY:sub(positionBytes + char:len() + 1)
+  local pre = PIXELMEMORY:sub(1, positionBytes)
+  local post = PIXELMEMORY:sub(positionBytes + char:len() + 1)
 
   PIXELMEMORY = pre .. char .. post
+  postlen = PIXELMEMORY:len()
+  if prelen ~= postlen then
+    log("WARNING: replace op grew pixel memory from "..prelen.." to "..postlen.." position "..position.." charlen "..char:len().." ledbytes "..LEDBYTES)
+  end
   return PIXELMEMORY
 end
 
 function ftl.pixelbuf.write(buffer)
---  log("writing datapin "..ftl.config.pixels.datapin.." clockpin "..ftl.config.pixels.clockpin.." "..buffer:len().." bytes")
   apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, buffer)
+end
+
+function ftl.pixelbuf.repack(buffer, bpp)
+  log("repack buffer "..buffer:len().." heap "..node.heap())
+  local newbuff = ""
+--  buffer:gsub("...", function(c)
+--    newbuff = newbuff .. string.char(5) .. c
+--  end)
+  for i = 1, #buffer do
+    if i%3 == 0 then
+      local rgb = buffer:sub(i-2,i)
+      newbuff = newbuff .. string.char(5) .. rgb
+      log("repack i "..i.." rgblen "..rgb:len().." newbuff "..newbuff:len().." heap "..node.heap())
+      if node.heap() < 16300 then
+        log("mem abort "..node.heap())
+        newbuff = buffer
+        break
+      end
+    end
+  end
+  log("repack post buffer "..newbuff:len().." "..node.heap())
+  return newbuff
+end
+
+function ftl.pixelbuf.trim(buffer, pixcount, bytesperpix)
+  local bufpixlen = buffer:len()/bytesperpix
+  if bufpixlen > pixcount then
+    local trimlen = pixcount*bytesperpix
+    buffer = buffer:sub(1, trimlen)
+  end
+  return buffer
 end
