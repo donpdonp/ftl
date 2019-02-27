@@ -3,7 +3,7 @@
 -- safety check
 bootcode, bootreason = node.bootreason()
 if bootreason then
-  print("bootreason "..bootreason)
+  print("bootreason "..bootreason.." heap "..node.heap())
 end
 
 if bootreason == 3 then

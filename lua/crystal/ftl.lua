@@ -8,8 +8,8 @@ require("ftl-pixelbuf")
 require("openpixel")
 
 function ftl:setup()
---  RED   = string.char(10, 10, 50, 10, 5,1,5,1)
---  apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, RED:rep(20))
+  RED   = string.char(15,0,0,50, 5,1,5,1)
+  apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, RED:rep(20))
   ftl.buffer = ftl.pixelbuf.new(ftl.config.pixels.count, ftl.config.pixels.bytesperpixel)
   ftl.wifi:setup(ftl.clientconn)
 end
@@ -23,13 +23,13 @@ function ftl.clientconn(conn)
       channel, command, msg = openpixel.go(buff, payload)
       if channel then
         buff = buff:sub(4+msg:len()+1, buff:len())
-        log("buff remaining len "..buff:len())
+        log("buff remaining len "..buff:len().." heap "..node.heap())
         response = ftl.dispatch(channel, command, msg)
         if response then
           conn:send(response)
         end
       else
-        log("buff at len "..buff:len().." payload "..payload:len())
+        log("buff in progress len "..buff:len().." added payload "..payload:len().." heap "..node.heap())
       end
     end)
 end

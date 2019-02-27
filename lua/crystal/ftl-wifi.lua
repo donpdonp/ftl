@@ -19,8 +19,8 @@ function ftl.wifi:watch(clientconn)
   status = wifi.sta.status()
   if status == wifi.STA_GOTIP then
     tmr.stop(ftl.wifi.alarm)
-    log("wifi "..wifi.sta.getip())
-    ftl.wifi:mdnssetup(wifi.sta.getmac())
+    log("wifi "..wifi.sta.getip().." "..wifi.sta.getrssi())
+    --ftl.wifi:mdnssetup(wifi.sta.getmac())
     srv = net.createServer(net.TCP)
     srv:listen(1550, clientconn)
   else
