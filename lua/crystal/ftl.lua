@@ -14,14 +14,14 @@ log("*ftl post openpixel heap "..node.heap())
 function ftl:setup()
   local startcolors = string.char(15,0,0,50, 5,1,5,1)
   apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, startcolors:rep(ftl.config.pixels.count))
-  ftl.buffer = ftl.pixelbuf.new(ftl.config.pixels.count, ftl.config.pixels.bytesperpixel)
+--  ftl.buffer = ftl.pixelbuf.new(ftl.config.pixels.count, ftl.config.pixels.bytesperpixel)
   ftl.wifi:setup(ftl.clientconn)
 end
 
 function ftl.clientconn(conn)
   port, ip = conn:getpeer()
   log("tcp client "..ip..":"..port.." heap "..node.heap())
-  buff = ""
+  local buff = ""
   conn:on("receive", function(conn, payload)
       if node.heap() < 14000 then
         log("buff len "..buff:len().." payload len "..payload:len().." heap WARNING "..node.heap())
@@ -38,7 +38,7 @@ function ftl.clientconn(conn)
           conn:send(response)
         end
       else
---        log("buff in progress len "..buff:len().." added payload "..payload:len().." heap "..node.heap())
+        log("short buff len "..buff:len().." added payload "..payload:len().." heap "..node.heap())
       end
     end)
 end
@@ -64,9 +64,9 @@ function ftl.dispatch(channel, command, buff)
     if ftl.config.pixels.bytesperpixel ~= 4 then
       log("bpp mismatch warning. 4 ~= "..ftl.config.pixels.bytesperpixel)
     end
-    buff = ftl.pixelbuf.trim(buff, ftl.config.pixels.count, 4)
-    ftl.buffer = ftl.pixelbuf.replace(ftl.buffer, 1, buff, 4)
-    ftl.pixelbuf.write(ftl.buffer)
+--    buff = ftl.pixelbuf.trim(buff, ftl.config.pixels.count, 4)
+--    ftl.buffer = ftl.pixelbuf.replace(ftl.buffer, 1, buff, 4)
+    ftl.pixelbuf.write(buff)
   end
   if command == 255 then
     rssi = wifi.sta.getrssi()
