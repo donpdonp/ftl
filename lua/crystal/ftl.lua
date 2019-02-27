@@ -12,10 +12,9 @@ require("openpixel")
 log("*ftl post openpixel heap "..node.heap())
 
 function ftl:setup()
+--  ftl.buffer = ftl.pixelbuf.new(ftl.config.pixels.count, ftl.config.pixels.bytesperpixel)
   local startcolors = string.char(15,0,0,50, 5,1,5,1):rep(math.floor(ftl.config.pixels.count/2))
   ftl.pixelbuf.write(startcolors)
-  apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, startcolors)
---  ftl.buffer = ftl.pixelbuf.new(ftl.config.pixels.count, ftl.config.pixels.bytesperpixel)
   ftl.wifi:setup(ftl.clientconn)
 end
 
@@ -85,10 +84,10 @@ function ftl.dispatch(channel, command, buff)
     ftl.pixelbuf.write(buff)
   end
   if command == 3 then -- write pos,rgbw
-    local pos = buff.byte()
+    local pos = buff:byte()
     buff = buff:sub(2, buff:len())
     log("replace pos "..pos.." buflen "..buff:len())
-    buff = ftl.pixelbuf.replace(ftl.buffer, 1, buff, ftl.config.pixels.bytesperpixel)
+    buff = ftl.pixelbuf.replace(ftl.buffer, pos, buff, ftl.config.pixels.bytesperpixel)
     ftl.pixelbuf.write(buff)
   end
   if command == 255 then
