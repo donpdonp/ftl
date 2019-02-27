@@ -27,9 +27,10 @@ function ftl.clientconn(conn)
         log("buff len "..buff:len().." payload len "..payload:len().." heap WARNING "..node.heap())
       end
       buff = buff .. payload
+      bufflen = buff:len()
       channel, command, msg = openpixel.go(buff, payload)
       if channel then
-        buff = buff:sub(4+msg:len()+1, buff:len())
+        buff = buff:sub(4+msg:len()+1, bufflen)
         if buff:len() > 0 then
           log("WARNING remaining buff len "..buff:len().." heap "..node.heap())
         end
@@ -38,7 +39,10 @@ function ftl.clientconn(conn)
           conn:send(response)
         end
       else
-        log("short buff len "..buff:len().." added payload "..payload:len().." heap "..node.heap())
+        log("short buff len "..bufflen.." added payload "..payload:len().." heap "..node.heap())
+        if bufflen > 4096 then
+          conn:close()
+        end
       end
     end)
 end
