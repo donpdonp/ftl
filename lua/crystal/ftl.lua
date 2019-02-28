@@ -30,37 +30,21 @@ function ftl.clientconn(conn)
         log("WARNING starting buff len "..buff:len().." payload len "..payload:len().." heap "..node.heap())
       end
       if buff:len() + payload:len() > 4096 then
-        log("WARNING buff reset before 4096 overload")
+        log("WARNING client close before 4096 overload")
         conn:close()
         return
       end
       buff = buff .. payload
-      bufflen = buff:len()
       local channel, command, msglen = openpixel.header(buff)
       while channel do
-        if channel then
-          local msg = buff:sub(openpixel.headerlen+1, openpixel.headerlen+msglen)
-          response = ftl.dispatch(channel, command, msg)
-          if response then
-            conn:send(response)
-          end
-          -- setup for the next loop
-          buff = buff:sub(openpixel.headerlen+msglen+1, bufflen)
-          if buff:len() > 0 then
-            log("WARNING remaining buff len "..buff:len().." heap "..node.heap())
-          end
-          channel, command, msglen = openpixel.header(buff)
-          if channel then
-            log("eating extra bytes "..buff:len().." 2nd msglen "..msglen .." heap "..node.heap())
-          end
-        else
-          local nodeheap = node.heap()
-          log("short buff len "..bufflen.." added payload "..payload:len().." heap "..nodeheap)
-          if nodeheap < 16200 then
-            conn:send("quit heap "..nodeheap)
-            conn:close()
-          end
+        local msg = buff:sub(openpixel.headerlen+1, openpixel.headerlen+msglen)
+        response = ftl.dispatch(channel, command, msg)
+        if response then
+          conn:send(response)
         end
+        -- setup for the next loop
+        buff = buff:sub(openpixel.headerlen+msglen+1, buff:len())
+        channel, command, msglen = openpixel.header(buff)
       end
     end)
 end
