@@ -37,22 +37,29 @@ function ftl.clientconn(conn)
       buff = buff .. payload
       bufflen = buff:len()
       local channel, command, msglen = openpixel.header(buff)
-      if channel then
-        local msg = buff:sub(openpixel.headerlen+1, openpixel.headerlen+msglen)
-        buff = buff:sub(openpixel.headerlen+msglen+1, bufflen)
-        if buff:len() > 0 then
-          log("WARNING remaining buff len "..buff:len().." heap "..node.heap())
-        end
-        response = ftl.dispatch(channel, command, msg)
-        if response then
-          conn:send(response)
-        end
-      else
-        local nodeheap = node.heap()
-        log("short buff len "..bufflen.." added payload "..payload:len().." heap "..nodeheap)
-        if nodeheap < 16200 then
-          conn:send("quit heap "..nodeheap)
-          conn:close()
+      while channel do
+        if channel then
+          local msg = buff:sub(openpixel.headerlen+1, openpixel.headerlen+msglen)
+          response = ftl.dispatch(channel, command, msg)
+          if response then
+            conn:send(response)
+          end
+          -- setup for the next loop
+          buff = buff:sub(openpixel.headerlen+msglen+1, bufflen)
+          if buff:len() > 0 then
+            log("WARNING remaining buff len "..buff:len().." heap "..node.heap())
+          end
+          channel, command, msglen = openpixel.header(buff)
+          if channel then
+            log("eating extra bytes "..buff:len().." 2nd msglen "..msglen .." heap "..node.heap())
+          end
+        else
+          local nodeheap = node.heap()
+          log("short buff len "..bufflen.." added payload "..payload:len().." heap "..nodeheap)
+          if nodeheap < 16200 then
+            conn:send("quit heap "..nodeheap)
+            conn:close()
+          end
         end
       end
     end)
