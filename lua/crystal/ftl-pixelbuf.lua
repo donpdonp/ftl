@@ -1,6 +1,16 @@
 log("*ftl.pixelbuf-apa102".." heap "..node.heap())
 ftl.pixelbuf = {}
 
+function ftl.pixelbuf.setup()
+  ws2812.init()
+end
+
+function ftl.pixelbuf.write(buffer)
+  --apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, buffer)
+  ws2812.write(buffer)
+  ftl.buffer = buffer
+end
+
 function ftl.pixelbuf.new(count, bpp)
   return ftl.pixelbuf.grow("", count, bpp)
 end
@@ -36,11 +46,6 @@ function ftl.pixelbuf.replace(PIXELMEMORY, position, char, LEDBYTES)
     log("WARNING: replace op grew pixel memory from "..prelen.." to "..postlen.." position "..position.." charlen "..char:len().." ledbytes "..LEDBYTES)
   end
   return PIXELMEMORY
-end
-
-function ftl.pixelbuf.write(buffer)
-  apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, buffer)
-  ftl.buffer = buffer
 end
 
 function ftl.pixelbuf.repack(buffer, bpp)

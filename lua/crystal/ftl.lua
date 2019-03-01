@@ -12,8 +12,9 @@ require("openpixel")
 log("*ftl post openpixel heap "..node.heap())
 
 function ftl:setup()
+  ftl.pixelbuf.setup()
 --  ftl.buffer = ftl.pixelbuf.new(ftl.config.pixels.count, ftl.config.pixels.bytesperpixel)
-  local startcolors = string.char(15,0,0,50, 5,1,5,1):rep(math.floor(ftl.config.pixels.count/2))
+  local startcolors = string.char(0,0,50, 1,5,1):rep(math.floor(ftl.config.pixels.count/2))
   ftl.pixelbuf.write(startcolors)
   ftl.wifi:setup(ftl.clientconn)
 end
