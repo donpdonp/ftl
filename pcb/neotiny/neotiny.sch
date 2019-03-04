@@ -1,35 +1,8 @@
-EESchema Schematic File Version 2
+EESchema Schematic File Version 4
 LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
 LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:atmel
-LIBS:contrib
-LIBS:valves
 LIBS:neotiny-cache
-EELAYER 25 0
+EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -77,9 +50,9 @@ F 3 "" H 7200 3500 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7200 2150 7200 2600
+	7200 2150 7200 2200
 Wire Wire Line
-	7200 3100 7200 3500
+	7200 3100 7200 3400
 $Comp
 L CONN_01X04 P1
 U 1 1 5896639C
@@ -115,4 +88,19 @@ Wire Wire Line
 	4500 2250 5850 2250
 Wire Wire Line
 	5850 2250 5850 2000
+Wire Wire Line
+	7200 2200 7200 2600
+Wire Wire Line
+	7200 3400 7200 3500
+$Comp
+L Connector_Generic:Conn_02x04_Counter_Clockwise J?
+U 1 1 5C7AFE25
+P 4100 2050
+F 0 "J?" H 4150 2367 50  0000 C CNN
+F 1 "Conn_02x04_Counter_Clockwise" H 4150 2276 50  0000 C CNN
+F 2 "" H 4100 2050 50  0001 C CNN
+F 3 "~" H 4100 2050 50  0001 C CNN
+	1    4100 2050
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
