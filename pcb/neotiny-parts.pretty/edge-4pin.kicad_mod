@@ -1,0 +1,12 @@
+(module edge-4pin (layer F.Cu) (tedit 5C7C33FB)
+  (fp_text reference REF** (at 0 0.5) (layer F.SilkS) hide
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (fp_text value edge-4pin (at 0 -0.5) (layer F.Fab)
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (pad 1 connect rect (at 0 0) (size 1.27 3) (layers F.Cu F.Mask))
+  (pad 2 connect rect (at 2.54 0) (size 1.27 3) (layers F.Cu F.Mask))
+  (pad 4 connect rect (at 7.62 0) (size 1.27 3) (layers F.Cu F.Mask))
+  (pad 3 connect rect (at 5.08 0) (size 1.27 3) (layers F.Cu F.Mask))
+)
