@@ -13,6 +13,12 @@ function ftl.pixelbuf.write(buffer)
   ftl.buffer = buffer
 end
 
+function ftl.pixelbuf.tempcolor(temp)
+  colors = string.char(0,0,temp*10):rep(3)
+  ftl.pixelbuf.replace(ftl.buffer, 1, colors,  ftl.config.pixels.bytesperpixel)
+  ftl.pixelbuf.write(ftl.buffer)
+end
+
 function ftl.pixelbuf.new(count, bpp)
   return ftl.pixelbuf.grow("", count, bpp)
 end
