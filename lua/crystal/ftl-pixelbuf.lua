@@ -14,8 +14,14 @@ function ftl.pixelbuf.write(buffer)
 end
 
 function ftl.pixelbuf.tempcolor(temp)
-  colors = string.char(0,0,temp*10):rep(3)
-  ftl.pixelbuf.replace(ftl.buffer, 1, colors,  ftl.config.pixels.bytesperpixel)
+  adjt = temp*5
+  log("tempcolor "..temp.."temp "..adjt.."adjt ".." heap "..node.heap())
+  colors = string.char(adjt,0,0)
+  ftl.buffer = ftl.pixelbuf.replace(ftl.buffer, 1, colors, ftl.config.pixels.bytesperpixel)
+  colors = string.char(0,adjt,0)
+  ftl.buffer = ftl.pixelbuf.replace(ftl.buffer, 8, colors, ftl.config.pixels.bytesperpixel)
+  colors = string.char(0,0,adjt)
+  ftl.buffer = ftl.pixelbuf.replace(ftl.buffer, 9, colors, ftl.config.pixels.bytesperpixel)
   ftl.pixelbuf.write(ftl.buffer)
 end
 

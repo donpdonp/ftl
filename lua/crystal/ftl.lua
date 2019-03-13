@@ -78,7 +78,7 @@ function ftl.dispatch(channel, command, buff)
 --    ftl.buffer = ftl.pixelbuf.replace(ftl.buffer, 1, buff, 4)
     ftl.pixelbuf.write(buff)
   end
-  if command == 3 then -- write pos,rgbw
+  if command == 3 then -- write pos,rgbw+
     local pos = buff:byte(1)*256+buff:byte(2)
     buff = buff:sub(3, buff:len())
     buff = ftl.pixelbuf.replace(ftl.buffer, pos, buff, ftl.config.pixels.bytesperpixel)
