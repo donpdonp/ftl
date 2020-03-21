@@ -1,4 +1,5 @@
 #!/bin/bash
+CWD=`pwd`
 TTY=`ls -1 /dev/ttyACM*`
 echo loading $1 to $TTY
 
@@ -6,7 +7,8 @@ RET=1
 while [ $RET -eq 1 ]
 do
 #luatool -p $TTY --delay 0.8 -f $1
-luatool -p $TTY -f $1
+echo luatool -p $TTY -f $CWD/$1
+~/projects/esp/ftl/luatool -p $TTY -f $CWD/$1
 RET=$?
 echo exit $RET
 done
