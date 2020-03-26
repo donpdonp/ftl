@@ -19,3 +19,8 @@ else
     ftl:setup()
   end)
 end
+
+function reboot()
+  node.restart()
+end
+
