@@ -16,8 +16,9 @@ function ftl.temp.setup()
       if (addr:byte(1) == 0x10) or (addr:byte(1) == 0x28) then
         ftl.temp.addr = addr   
 	print(string.format("ds18b20 %x-%x%x%x%x%x%x%x", addr:byte(1), addr:byte(2),addr:byte(3),addr:byte(4),addr:byte(5),addr:byte(6),addr:byte(7),addr:byte(8)))
+	log("ftl.temp.timer:stop() to stop temperature readings")
         ftl.temp.timer = tmr.create()
-	ftl.temp.timer:alarm(1000, tmr.ALARM_AUTO, ftl.temp.read)
+	ftl.temp.timer:alarm(2000, tmr.ALARM_AUTO, ftl.temp.read)
       else
         print("ds18b20 address CRC is not valid!")
       end
@@ -45,10 +46,10 @@ function ftl.temp.read()
       local t = (data:byte(1) + data:byte(2) * 256) * 625
       local sgn = t<0 and -1 or 1
       local tA = sgn*t
-      local t1 = math.floor(tA / 10000)
-      local t2 = tA % 10000
-      print("Temperature="..(sgn<0 and "-" or "")..t1.."."..t2.."C")
-      ftl.temp.last_temp = t1
+      local t1 = math.floor(tA / 1000)
+      local t2 = sgn * t1 / 10.0
+      --print("Temperature="..t2.."C")
+      ftl.temp.last = t2
     else
       print("temp crc bad")
     end

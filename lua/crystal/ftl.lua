@@ -27,8 +27,8 @@ function ftl.clientconn(conn)
   log("tcp client "..ip..":"..port.." heap "..node.heap())
   local buff = ""
   conn:on("receive", function(conn, payload)
-      if node.heap() < 14000 then
-        log("buff len "..buff:len().." payload len "..payload:len().." heap WARNING "..node.heap())
+      if node.heap() < 10000 then
+        log("buff len "..buff:len().." payload len "..payload:len().." heap "..node.heap().." LOW WARNING")
       end
       if buff:len() > 0 then
         log("WARNING starting buff len "..buff:len().." payload len "..payload:len().." heap "..node.heap())
@@ -85,12 +85,14 @@ function ftl.dispatch(channel, command, buff)
     ftl.pixelbuf.write(buff)
   end
   if command == 254 then
+      log("temp "..ftl.temp.last)
+      return "temp "..ftl.temp.last.."\n"
   end
   if command == 255 then
     rssi = wifi.sta.getrssi()
     if rssi then
       log("rssi "..rssi)
-      return "rssi "..rssi
+      return "rssi "..rssi.."\n"
     else
       log("rssi null")
     end
