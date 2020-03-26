@@ -84,6 +84,8 @@ function ftl.dispatch(channel, command, buff)
     buff = ftl.pixelbuf.replace(ftl.buffer, pos, buff, ftl.config.pixels.bytesperpixel)
     ftl.pixelbuf.write(buff)
   end
+  if command == 254 then
+  end
   if command == 255 then
     rssi = wifi.sta.getrssi()
     if rssi then
