@@ -1,6 +1,5 @@
 log("*ftl.wifi".." heap "..node.heap())
 ftl.wifi = {}
-ftl.wifi.alarm = 1
 
 function ftl.wifi:setup(clientconn)
   -- wifi.STATION = client
@@ -9,8 +8,9 @@ function ftl.wifi:setup(clientconn)
   log('wifi mode='..wifi.getmode())
   log('mac address: '..wifi.sta.getmac())
   wifi.sta.config(ftl.config.wifi)
-  log("tmr.stop("..ftl.wifi.alarm..") to stop wifi status checks")
-  tmr.alarm(ftl.wifi.alarm, 2000, 1, function()
+  log("ftl.wifi.tmr:stop() to stop wifi status checks")
+  ftl.wifi.tmr = tmr.create()
+  ftl.wifi.tmr:alarm(2000, tmr.ALARM_AUTO, function()
       ftl.wifi:watch(clientconn)
     end)
 end
@@ -18,9 +18,9 @@ end
 function ftl.wifi:watch(clientconn)
   status = wifi.sta.status()
   if status == wifi.STA_GOTIP then
-    tmr.stop(ftl.wifi.alarm)
+    ftl.wifi.tmr:unregister()
     log("wifi "..wifi.sta.getip().." "..wifi.sta.getrssi().." heap "..node.heap())
-    tmr.alarm(0, 1000, tmr.ALARM_SINGLE, function()
+    tmr.create():alarm(1000, tmr.ALARM_SINGLE, function()
       ftl.wifi:mdnssetup(wifi.sta.getmac())
     end)
     srv = net.createServer(net.TCP)

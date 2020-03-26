@@ -2,14 +2,14 @@ log("*ftl.pixelbuf-apa102".." heap "..node.heap())
 ftl.pixelbuf = {}
 
 function ftl.pixelbuf.setup()
-  --ftl.pixelbuf.startcolors = string.char(5,0,0,50, 5,1,5,1)
-  ftl.pixelbuf.startcolors = string.char(0,0,50, 1,5,1)
-  ws2812.init()
+  ftl.pixelbuf.startcolors = string.char(5,0,0,50, 5,1,5,1)
+  --ftl.pixelbuf.startcolors = string.char(0,0,50, 1,5,1)
+  --ws2812.init()
 end
 
 function ftl.pixelbuf.write(buffer)
-  --apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, buffer)
-  ws2812.write(buffer)
+  apa102.write(ftl.config.pixels.datapin, ftl.config.pixels.clockpin, buffer)
+  --ws2812.write(buffer)
   ftl.buffer = buffer
 end
 

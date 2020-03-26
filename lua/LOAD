@@ -1,4 +1,11 @@
 #!/bin/bash
+NANOPID=`pidof nanocom`
+if [ ! -z $NANOPID ]
+then
+  echo SQUASH nanocom
+  sudo kill $NANOPID
+fi
+
 CWD=`pwd`
 TTY=`ls -1 /dev/ttyACM*`
 echo loading $1 to $TTY
@@ -11,5 +18,10 @@ echo luatool -p $TTY -f $CWD/$1
 ~/projects/esp/ftl/luatool -p $TTY -f $CWD/$1
 RET=$?
 echo exit $RET
+if [ $RET -ne 0 ]
+then
+  echo
+  sleep 1
+fi
 done
 

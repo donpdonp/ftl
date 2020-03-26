@@ -10,7 +10,9 @@ if bootreason == 3 then
   print("exception reboot. ftl startup halted.")
 else
   -- safety pause
-  tmr.alarm(0, 2000, tmr.ALARM_SINGLE, function()
+  print("normal startup. halt with boot:stop()")
+  boot = tmr.create()
+  boot:alarm(2000, tmr.ALARM_SINGLE, function()
     require('util')
     log("") -- jump down from the prompt
     require('ftl')
